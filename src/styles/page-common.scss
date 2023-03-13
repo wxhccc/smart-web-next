@@ -1,0 +1,82 @@
+
+@mixin search-container {
+  display: flex;
+  margin-bottom: 16px;
+  .ant-form-item-control {
+    min-width: 120px;
+  }
+  // 则会一部分给几个常用的下拉条件设置最小宽度
+  .search-form {
+    .common-select {
+      min-width: 8em;
+    }
+  }
+}
+.sw-search-container,
+.common-list-page .top-form-container {
+  @include search-container();
+}
+/* 列表页常用布局 */
+.sw-list-page {
+  .search-container {
+    @include search-container();
+  }
+  .operation-btns {
+    flex: 1;
+    white-space: nowrap;
+    .ant-btn {
+      margin-right: 12px;
+    }
+  }
+  .list-container {
+    flex: 1;
+  }
+  .common-list-page,
+  .full-page-container {
+    height: 100%;
+    @include flex-block(column);
+    .paged-table {
+      flex: 1;
+    }
+  }
+  .full-page-container {
+    padding-bottom: 6px;
+    overflow: hidden;
+  }
+  
+}
+
+.sw-module-edit-page {
+  .module-title {
+    font-weight: bold;
+  }
+  .module-fix-tabs {
+    overflow: hidden auto;
+    .ant-tabs-bar {
+      position: sticky;
+      top: 0;
+      z-index: 9;
+      background-color: var(--white);
+    }
+  }
+  .module-pane {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 52px;
+    }
+  }
+  .bottom-fixed-pane {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 0 31px 0 16px;
+    box-sizing: border-box;
+    z-index: 99;
+    .form-btns {
+      text-align: right;
+      padding: 10px 16px;
+      @include shadow-card;
+    }
+  }
+}
