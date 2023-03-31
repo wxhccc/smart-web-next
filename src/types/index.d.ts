@@ -18,6 +18,8 @@ declare namespace App {
 
   /** 只将给定字段修改为非必须 */
   type PartailSome<P, RK extends keyof P> = Partial<Pick<P, RK>> & Omit<P, RK>
-  /**  */
+  /** 将指定字段外的其他字段设定为非必须 */
+  type PartailExclude<P, RK extends keyof P> = Pick<P, RK> & Partial<Omit<P, RK>>
+  /** 挑选指定字段并设置为非必须 */
   type PartailPick<P, RK extends keyof P> = Partial<Pick<P, RK>>
 }

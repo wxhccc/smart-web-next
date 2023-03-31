@@ -220,7 +220,7 @@ function handleRoutes(
       return false
     }
     delete item.rightRelevance
-    // 如果没有特定面包屑，则自动生产
+    // 如果没有特定面包屑，则自动生成
     if (!meta || !meta.breadcrumb) {
       attachMeta.breadcrumb = getRouteBreadcrumb(item)
     }
@@ -302,14 +302,17 @@ export const resoucesToRights = (
     return []
   }
   return resources.map((item) => {
-    const { name, children, ...reset } = item
+    const { type, key, children, ...reset } = item
+    const [name, permission] = type === 0 ? [key, undefined] : [undefined, key]
     const vRoute = name ? vitrualRoutesMap[name] : null
     const { component: template, path } = (
       vRoute ? (typeof vRoute === 'string' ? { component: vRoute } : vRoute) : {}
     ) as VirtualRoutes.RouteTplInfo
     return {
       ...reset,
+      type,
       name,
+      permission,
       ...(template ? { template, path } : {}),
       children: resoucesToRights(children || [], vitrualRoutesMap)
     } as App.RightItem

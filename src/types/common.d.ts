@@ -6,11 +6,12 @@ declare namespace Common {
     [key: string]: any
   }
 
+  /** 模态弹框组件通用属性 */
   interface ModalProps<T> {
     visible: boolean
-    title: string
-    modal: T
-    onClose: (bool: boolean) => void
+    title?: string
+    model?: T
+    onClose?: (bool: boolean) => void
   }
 
   interface SearchProps<T> {
@@ -60,4 +61,10 @@ declare namespace Common {
   type ConfigFilter = (val: App.StrOrNum) => App.StrOrNum
   /** 切换锁定状态的函数 */
   type LockSwitch = (bool: boolean) => void
+
+  /** 记录操作者信息 */
+  interface OperatorInfo {
+    id: number
+    account: string
+  }
 }

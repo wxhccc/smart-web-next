@@ -1,4 +1,3 @@
-import dayjs, { Dayjs } from 'dayjs'
 import numeral from 'numeral'
 
 /***
@@ -48,31 +47,7 @@ export function secondStringify(seconds: number, level = 0, lang = 'zh') {
   return result.join('')
 }
 
-const dateFormatShot: Record<string, string> = {
-  default: 'YYYY-MM-DD HH:mm:ss',
-  date: 'YYYY-MM-DD'
-}
-
-/**
- * 时间格式化函数，添加了容错处理，支持10/13位时间戳，以及其他Date和moment支持的格式
- * @param date 传入时间
- * @param format 格式化字符串，格式参见moment
- * @returns string
- */
-export function dateFormat(date?: string | number | Date | Dayjs, format = 'default') {
-  let trueDate: null | Dayjs = null
-  if (!date) {
-    return ''
-  }
-  if (dayjs.isDayjs(date)) {
-    trueDate = date
-  } else if (date instanceof Date) {
-    trueDate = dayjs(date)
-  } else if (!isNaN(new Date(date).getTime())) {
-    trueDate = dayjs(new Date(date))
-  } else if (isFinite(Number(date)) && !isNaN(new Date((date as number) * 1000).getTime())) {
-    trueDate = dayjs(new Date((date as number) * 1000))
-  }
-  const formatStr = dateFormatShot[format] || format
-  return trueDate ? trueDate.format(formatStr) : ''
+/** 处理空字符串或undefined,返回指定格式的占位字符 **/
+export function emptyCell(value: unknown) {
+  return (value !== null || value !== undefined) ? value : '--'
 }

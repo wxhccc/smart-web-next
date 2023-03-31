@@ -3,6 +3,7 @@
 设置a-form-item中的常用表单域与容器等宽
 */
 .sw-common-container {
+  min-height: 100%;
   @include common-container;
 }
 
@@ -143,6 +144,31 @@
     box-shadow: none;
   }
 }
+.sw-fixed-tabs {
+  .ant-tabs-content-holder {
+    flex: 1;
+    overflow: hidden;
+  }
+  .ant-tabs-content, .ant-tabs-tabpane {
+    height: 100%;
+  }
+  .ant-tabs-tabpane {
+    overflow: auto;
+  }
+}
+
+.sw-flex-two {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  &.flex-row {
+    flex-direction: row;
+  }
+  .sw-flex-auto {
+    flex: 1;
+    overflow: auto;
+  }
+}
 
 .sw-primary-link, .sw-primary-link:hover {
   color: var(--theme-color);
@@ -185,5 +211,7 @@
   left: 0;
   top: 0;
   z-index: 999;
-  background-color: rgba(0, 0, 0, 0.2)
+  &.bg-color {
+    background-color: rgba(0, 0, 0, 0.05)
+  }
 }

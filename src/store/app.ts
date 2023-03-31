@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { Storage, configToMap } from '@/utils'
-import getAppConfig from '@/config/app-dict'
+import { getAppConfig } from '@/config'
 import { WsInstance } from '@/utils/websocket'
 
 const appConfig: ReturnType<typeof getAppConfig> = Storage.session('APPCONFIG') || getAppConfig() || {}
@@ -32,6 +32,8 @@ export interface AppState {
   customPageTitle: string
   /** 全局websocket实例对象 */
   globalWs: undefined | WsInstance
+  /** ali oss 临时token */
+  ossAccessToken: App.AnyObject
 }
 
 
@@ -60,7 +62,8 @@ export const useAppStore = defineStore('app', {
     // 系统配置数据key-value对照map
     appConfigDictMap: configToMap(appConfig),
     customPageTitle: '',
-    globalWs: undefined
+    globalWs: undefined,
+    ossAccessToken: Storage.get('OSSACCESSTOKEN') || {}
   }),
   getters: {
     getAppConfig: (state) => (key: keyof AppConfig) => state.appConfig[key] || [],
@@ -82,7 +85,14 @@ export const useAppStore = defineStore('app', {
     },
     setSidebarMenu (data: App.SideMenuItem[]) {
       this.sidebar.menuItems = Array.isArray(data) ? data : []
-    }
+    },
+    setOssAccessToken (ossToken: App.AnyObject) {
+      if (!ossToken || !ossToken.expireTime) {
+        return
+      }
+      this.ossAccessToken = ossToken
+      Storage.session('OBSACCESSTOKEN', ossToken)
+    },
   }
 })
 

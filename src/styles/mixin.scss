@@ -97,7 +97,7 @@
 }
 @mixin page-module-pane {
   @include white-bg;
-  padding: 20px;
+  padding: var(--base-space);
 }
 @mixin shadow-card {
   @include white-bg;
@@ -106,6 +106,6 @@
 
 @mixin common-container {
   width: 100%;
-  padding: 16px;
+  padding: var(--base-space);
   background-color: var(--white-color);
 }

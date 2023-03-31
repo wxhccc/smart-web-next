@@ -8,11 +8,11 @@ export const useCommonForm = <T extends App.AnyObject = App.AnyObject>(initData?
 
   const formData = ref({ ...initData } as T)
 
-  const colProps = (spans: [number, number] = [4, 18]): FormProps => ({ labelCol: { span: spans[0] }, wrapperCol: { span: spans[1] } })
+  const colProps = (spans: [number, number] = [4, 18]) => ({ labelCol: { span: spans[0] }, wrapperCol: { span: spans[1] } })
 
-  const formProps = ref(colProps())
+  const formProps = ref<Partial<FormProps>>(colProps())
 
-  return { form, formData, formProps }
+  return { form, formData, colProps, formProps }
 }
 
 /**

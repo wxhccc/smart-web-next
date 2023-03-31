@@ -1,13 +1,18 @@
 import { isRef, Ref } from 'vue'
-import { wp, formParamsSwitchCreator } from '@wxhccc/es-util'
+import { formParamsSwitchCreator } from '@wxhccc/es-util'
 import { mergeWith, cloneDeep, pick, isEqual } from 'lodash-es'
-import { dateFormat } from './formatter'
+import { dateFormat } from '@wxhccc/ue-antd-vue'
+import { FetchOptions } from '@wxhccc/smartfetch'
 
 export { safeJsonParse, switchNullToUndefined, filterNullable } from '@wxhccc/es-util'
 
 export { vwp } from '@wxhccc/ue-antd-vue'
 
 export { winFetch as smartfetch } from '@wxhccc/smartfetch'
+
+export const refToLock = (boolRef: Ref<boolean>) => {
+  return { lock: [boolRef, 'value'] } as FetchOptions
+}
 
 /***
  ** 使用lodash的mergeWith合并对象,规则为数组自动拼接
@@ -22,8 +27,7 @@ export function mergeObj(...args: Parameters<typeof mergeWith>) {
   })
 }
 
-export const genNonDuplicateID = () =>
-  `${Date.now().toString(16)}${Math.round(Math.random() * 100000000000).toString(16)}`
+export { v4 as genUUID } from 'uuid'
 
 /**
  * 用传入的keys生产一个监听函数，函数会对比传入的对象，如果指定的key发生变化，则触发回调函数更新返回值
@@ -42,17 +46,6 @@ export function watchCallback<TT extends App.AnyObject = App.AnyObject, RT = voi
     }
     return saveReturn
   }
-}
-
-/**
- * 通用下拉选项过滤函数
- * @param key 输入内容
- * @param option 当前选项
- * @returns boolean
- */
-export function filterOption(key: string, option: any) {
-  const { label } = option || {}
-  return !option || `${label}`.toLowerCase().includes(key.toLowerCase())
 }
 
 export type ScheduledFn<T extends (...args: any[]) => void> = T & { cancel(): void }

@@ -1,12 +1,12 @@
-import { CommonFieldProps } from '@/components/common-field'
 import { checkoutBy } from '@wxhccc/es-util'
 import {
   createDateFormItem,
   createFFIRulesProps,
   createFormFieldItem,
   createInputFormItem,
+  CommonFieldProps,
   StrOrProps
-} from '../utils/optionals'
+} from '@wxhccc/ue-antd-vue'
 
 /** xx名称 */
 export const nameFormItem = (label = '名称', required?: boolean, name = 'name', disabled?: boolean) => {

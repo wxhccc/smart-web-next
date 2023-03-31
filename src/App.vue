@@ -26,7 +26,6 @@ export default defineComponent({
     const userStore = useUserStore()
     const router = useRouter()
     const locale = zhCN
-    const sidebarJson = ref('')
     const curRouteNames = ref<string[]>([])
 
     // 登出系统

@@ -7,6 +7,13 @@ const rememberMeta = (listPageName: string): RouteMeta => ({
 
 /** 固定name（非模版）的动态权限路由列表 **/
 export const adminDynaRoutes = (): RouteRecordItem[] => [
+  {
+    path: 'access/users', // 路由路径
+    title: '用户列表',
+    name: 'UserList',
+    component: () => import('@/views/users-access/users'),
+    meta: {}
+  },
   // {
   //   path: '/access/users/new',
   //   title: '新增用户',
@@ -46,4 +53,16 @@ export const adminDynaRoutes = (): RouteRecordItem[] => [
     }
   }
   */
+  {
+    path: 'system/rights',
+    name: 'SystemRights',
+    component: () => import('@/views/system-setting/rights'),
+    meta: {}
+  },
+  {
+    path: 'system/configs',
+    name: 'SystemConfigs',
+    component: () => import('@/views/system-setting/configs'),
+    meta: {}
+  }
 ]

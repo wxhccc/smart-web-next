@@ -1,11 +1,11 @@
 declare namespace Search {
-  export interface ListParam extends TimeRange {
+  interface ListParam extends TimeRange {
     current?: number
     size?: number
-    searchCount?: boolean
   }
 
-  export interface TimeRange {
+  interface TimeRange {
+    dateRange?: [string, string]
     startTime?: string
     endTime?: string
   }

@@ -12,10 +12,20 @@
     }
   }
 }
-.sw-search-container,
-.common-list-page .top-form-container {
-  @include search-container();
+
+.ue-common-list-page {
+  .top-form-container {
+    @include search-container();
+    @include common-container();
+    .operation-pane {
+      display: flex;
+      align-items: flex-end;
+      margin-right: 40px;
+      padding-bottom: 12px;
+    }
+  }
 }
+
 /* 列表页常用布局 */
 .sw-list-page {
   .search-container {
@@ -31,7 +41,7 @@
   .list-container {
     flex: 1;
   }
-  .common-list-page,
+  .ue-common-list-page,
   .full-page-container {
     height: 100%;
     @include flex-block(column);

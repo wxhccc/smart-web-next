@@ -1,23 +1,29 @@
 import { h, VNodeProps } from 'vue'
 import { ActionBtns, ActionBtnItem, PagedTbColumnProps } from '@wxhccc/ue-antd-vue'
-import { TableCellRender } from '../types'
 import { isFunction } from 'lodash-es'
 
+export const tableActionBtn = (options: ActionBtnItem): ActionBtnItem => ({
+  props: { size: 'small' },
+  btype: 'link',
+  ...options
+})
+
 export function viewBtn(hander: ActionBtnItem['click'], props: ActionBtnItem = {}): ActionBtnItem {
-  return {
+  return tableActionBtn({
     text: '查看',
     key: 'view',
     click: hander,
     ...props
-  }
+  })
 }
 export function editBtn(hander: ActionBtnItem['click'], props: ActionBtnItem = {}): ActionBtnItem {
-  return {
+  return tableActionBtn({
     text: '编辑',
     key: 'edit',
+    btype: 'link',
     click: hander,
     ...props
-  }
+  })
 }
 
 export interface StateBtnOptions<D> {
@@ -42,29 +48,30 @@ export function stateBtn<D extends App.AnyObject = App.AnyObject>(
   }
   const [enable, disabled] = stateTexts
   // 检查数据是否是可用
-  const checkIsAccess = (record: D) =>
-    isChecked instanceof Function ? isChecked(record[stateKey], record) : !!record[stateKey]
-  const config: ActionBtnItem = {
-    text: (record): string => (!checkIsAccess(record) ? enable : disabled),
+  const checkIsAccess = (record: D) => isFunction(isChecked) ? isChecked(record[stateKey], record) : !!record[stateKey]
+    
+  const config: ActionBtnItem = tableActionBtn({
+    text: ({ text }): string => (!checkIsAccess(text) ? enable : disabled),
     key: 'state',
     loadingKey: 'stateSetting',
     click: hander,
     ...props
-  }
+  })
   if (confirmMessage !== false) {
     Object.assign(config, {
       isConfirm: true,
-      confirmConfig: (record: D) => {
+      confirmMsg: (record: D) => {
+        console.log(111, record)
         const isAccess = checkIsAccess(record)
         const keyWord = isAccess ? disabled : enable
-        const content =
-          confirmMessage instanceof Function
-            ? confirmMessage(isAccess, keyWord)
-            : `${keyWord}后，该条数据将${isAccess ? '不可使用' : '恢复使用'}，确定${keyWord}吗?`
-        return { content }
+          
+        return isFunction(confirmMessage)
+        ? confirmMessage(isAccess, keyWord)
+        : `${keyWord}后，该条数据将${isAccess ? '不可使用' : '恢复使用'}，确定${keyWord}吗?`
       }
     })
   }
+  console.log(222, confirmMessage, config)
   return config
 }
 
@@ -76,10 +83,12 @@ export function deleteBtn(
   return {
     text: '删除',
     isConfirm: true,
+    btype: 'link',
     key: 'delete',
     loadingKey: 'deleteing',
     confirmMsg: content,
     props: {
+      size: 'small',
       danger: true
     },
     click: isFunction(deleteHandler) ? deleteHandler : () => undefined,

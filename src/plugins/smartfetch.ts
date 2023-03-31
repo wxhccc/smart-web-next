@@ -1,6 +1,6 @@
 import smartfetch, { CodeErrorHandler, ErrorHandler, SmartFetchMixedRootOptions, StatusErrorHandler } from '@wxhccc/smartfetch'
 import { notification } from 'ant-design-vue'
-import { AxiosResponse } from 'axios'
+import { useUserStore } from '@/store'
 
 const notifyQueue: string[] = []
 export function notifyMsg(msg: string) {
@@ -24,6 +24,7 @@ const statusWarn = {
   '500': '服务器连接异常，请稍后再试'
 }
 
+/** 刷新token的逻辑
 const refreshToken = (key: string) => {
   return {}
 }
@@ -46,44 +47,52 @@ const getTokenByRefreshToken = async () => {
     // await store.dispatch('loginIn', data)
   }
 }
+ */
 
-const statusHandler: StatusErrorHandler = (status, error) => {
-  const refreshToken = ''
-  if (status === 401 && refreshToken && tokenRefreshTime < 100) {
-    tokenRefreshTime++
-    return getTokenByRefreshToken()
+const statusHandler: StatusErrorHandler = (status) => {
+  // 处理需要refresh刷新token的情况
+  // const refreshToken = ''
+  // if (status === 401 && refreshToken && tokenRefreshTime < 100) {
+  //   tokenRefreshTime++
+  //   return getTokenByRefreshToken()
+  // }
+  switch (status) {
+    case 401:
+      const store = useUserStore()
+      store.logout()
+      break
+    default:
+      break
   }
 }
 
-export const errorHandler: ErrorHandler<AxiosResponse> = (
+export const errorHandler: ErrorHandler<Response> = async (
   msg,
   error,
   response,
   curtomHandler?: App.AnyFunction<void>
 ) => {
-  const { code = 0, message = '' } =
-    response && response.data ? response.data : {}
+  const resJson = await response?.json()
+  const { code = 0, message = '' } = { ...resJson }
+  console.log(msg, error, response, resJson)
   msg = message || msg
   curtomHandler ? curtomHandler(code, notifyMsg) : notifyMsg(msg as string)
-}
-
-export const codeErrorHandler: CodeErrorHandler = (resJson) => {
-  const { message } = resJson as unknown as App.ApiRes
-  notifyMsg(message)
 }
 
 export const options: SmartFetchMixedRootOptions = {
   baseConfigs: [
     {
       key: 'default',
-      // baseURL: 'http://localhost:3000'
-      baseURL: 'http://nas.dustai.com:13001'
+      baseURL: 'http://localhost:8800',
+      headers: () => {
+        const { token } = useUserStore()
+        return (token ? { Authorization: token } : {}) as any
+      }
     }
   ],
   statusHandler,
-  codeErrorHandler,
   errorHandler,
-  responseCodeCheck: (resjson) => resjson.code === 200,
+  responseCodeCheck: (resjson) => resjson.code === 0,
   dataKey: 'data',
   statusWarn,
   switchDataNull: true,

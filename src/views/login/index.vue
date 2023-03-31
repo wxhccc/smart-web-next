@@ -2,25 +2,25 @@
 import { h, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
-import { FormFields, FormBtns, createFFIRulesProps, createInputFormItem } from '@wxhccc/ue-antd-vue'
+import { FormFields, FormBtns, createFFIRulesProps, createInputFormItem, vwp } from '@wxhccc/ue-antd-vue'
 import { login } from '@/api/auth'
 import { useUserStore } from '@/store'
 import { smartfetch } from '@/utils'
+import { encrptedPassword } from '@/utils/auth'
 
 const store = useUserStore()
 const router = useRouter()
 const form = ref()
 
 const loginForm = ref({
-  username: '',
-  password: '',
-  captcha: ''
+  account: '',
+  password: ''
 })
 const sending = ref(false)
 const verifyCodeKey = ref(+new Date())
 
 const fieldItems = ref([
-  createInputFormItem(createFFIRulesProps('', true), 'username', {
+  createInputFormItem(createFFIRulesProps('', true), 'account', {
     placeholder: '账号',
     maxLength: 40,
     size: "large",
@@ -35,26 +35,17 @@ const fieldItems = ref([
     slots: {
       prefix: () => [h(LockOutlined)]
     }
-  }),
-  // createInputFormItem(createFFIRulesProps('', true), 'captcha', {
-  //   placeholder: '验证码',
-  //   type: 'captcha',
-  //   size: "large",
-  //   slots: {
-  //     prefix: () => [h(SafetyOutlined)],
-  //     suffix: () => [h(VerifyCodeImage, { key: verifyCodeKey.value })]
-  //   }
-  // })
+  })
 ])
 
 const loginSend = async () => {
-  const params = { ...loginForm.value }
-  const [err, data] = await smartfetch<Auth.AccessInfo>(login(params))
+  const { account, password } = loginForm.value
+  const params = { account, password: encrptedPassword(password) }
+  const [err, data] = await smartfetch<Auth.AccessInfo>(login(params), { lock: [sending, 'value'] })
   if (err) {
     verifyCodeKey.value = +new Date()
     return
   }
-  // const data = { token: 'xxxxxxxx' } as Auth.AccessInfo
   if (data && data.token) {
     store.loginIn(data)
     router.push({ name: 'AdminIndex' })

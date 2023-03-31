@@ -32,7 +32,7 @@ export const useUserStore = defineStore('user', {
       Storage.set('REFRESHTOKEN', refreshToken)
     },
     setUserInfo (userInfo: Partial<UserState['userInfo']>) {
-      this.userInfo = Object.assign({}, this.userInfo, userInfo)
+      this.userInfo = { ...this.userInfo, ...userInfo }
       Storage.set('USERINFO', this.userInfo)
     },
     setRouteActions (actions: string[]) {

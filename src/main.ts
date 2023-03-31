@@ -5,6 +5,7 @@ import App from './App.vue'
 import './plugins/smartfetch'
 
 import 'ant-design-vue/dist/antd.css'
+import '@wxhccc/ue-antd-vue/dist/style.css'
 import '@/styles/index.scss'
 
 const app = createApp(App)

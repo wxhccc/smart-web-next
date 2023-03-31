@@ -1,9 +1,9 @@
 declare namespace Auth {
   /** 登陆参数 */
   interface LoginParams {
-    username: string
+    account: string
     password: string
-    captcha: string
+    captcha?: string
   }
   /** 登陆后的返回参数 */
   interface AccessInfo extends User.AccountInfo {
@@ -21,10 +21,8 @@ declare namespace Auth {
     title: string
     /** 权限项类型，0=菜单，1=功能点 */
     type: number
-    /** 菜单页面的路由name, name需要全局唯一 */
-    name: string | undefined
-    /** 页面权限点的key */
-    permission?: string
+    /** 菜单页面的路由name或页面权限点的key, 为name时需要全局唯一 */
+    key: string
     children?: RightItem[]
   }
 }

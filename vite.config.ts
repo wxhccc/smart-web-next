@@ -7,6 +7,9 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    port: 5678
+  },
   plugins: [vue(),
     ViteComponents({
       resolvers: [AntDesignVueResolver({ resolveIcons: true })]

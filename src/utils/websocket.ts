@@ -1,7 +1,7 @@
 import { onBeforeUnmount } from 'vue'
 import { useAppStore, useUserStore } from '@/store'
 import { awaitWrapper } from '@wxhccc/es-util'
-import { genNonDuplicateID, safeJsonParse } from '.'
+import { genUUID, safeJsonParse } from '.'
 
 interface InitOptions {
   /** 连接websocket的地址，如果地址有有需要动态获取的参数，可以使用函数配置 */
@@ -194,7 +194,7 @@ export const useWebsocket = (namespace?: string): NsWsInstance => {
     store.globalWs = createPmInstance({ url: handleUrl })
   }
   const ws = store.globalWs as WsInstance
-  const nsName = namespace || genNonDuplicateID()
+  const nsName = namespace || genUUID()
 
   /** 添加当前命名空间内的ws监听事件，添加的事件将在组件被销毁时移除 */
   const nsOn = <T extends any = any>(eventName: string, listener: WsEventListener<T>) => {

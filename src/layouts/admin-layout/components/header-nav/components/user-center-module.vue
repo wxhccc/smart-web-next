@@ -16,6 +16,9 @@
         <router-link :to="{ name: 'AdminIndex' }">
           <a-menu-item>首页</a-menu-item>
         </router-link>
+        <router-link :to="{ name: 'UserProfile' }">
+          <a-menu-item>账号信息</a-menu-item>
+        </router-link>
         <a-menu-item @click="onChangePwd">修改密码</a-menu-item>
         <a-menu-divider />
         <a-menu-item>

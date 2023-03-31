@@ -20,6 +20,11 @@ const router = createRouter({
           name: 'AdminIndex',
           component: () => import('@/views/admin-index.vue')
         },
+        {
+          path: 'user-profile',
+          name: 'UserProfile',
+          component: () => import('@/views/user-profile/index.vue')
+        },
         // 测试组件用页面
         ...(isDev
           ? [

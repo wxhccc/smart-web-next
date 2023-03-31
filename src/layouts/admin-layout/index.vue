@@ -95,7 +95,7 @@ export default defineComponent({
     & > div {
       width: 100%;
       height: 100%;
-      padding: 0 16px 16px;
+      padding: 0 var(--base-space) var(--base-space);
       display: flex;
       flex-direction: column;
       min-width: 600px;

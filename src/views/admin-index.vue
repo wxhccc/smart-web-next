@@ -20,7 +20,7 @@ export default defineComponent({
         const { lastPath } = route.params
         if (lastPath && typeof lastPath === 'string') {
           router.push(lastPath)
-        } else if (firstRoute) {
+        } else if (firstRoute && router.hasRoute(firstRoute)) {
           router.push({ name: firstRoute })
         }
       },

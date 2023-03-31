@@ -3,15 +3,13 @@ import { Switch } from 'ant-design-vue'
 import { isFunction } from 'lodash-es'
 import { checkoutBy } from '@wxhccc/es-util'
 import StatusDot from '@/components/status-dot'
-import { createTableColumn } from '../utils'
+import { createTableColumn, tableColumnFormatter } from '../utils'
 
 export const commonTbColumns = () => ({
   index: createTableColumn('序号', '', { width: '80px' }),
   idcard: createTableColumn('身份证号', 'idcard'),
   mobile: createTableColumn('手机号', 'mobile'),
-  money: createTableColumn<App.AnyObject>('金额', 'money', {
-    customRender: formatters.moneyFormatter
-  }),
+  money: createTableColumn<App.AnyObject>('金额', 'money', tableColumnFormatter('money')),
   action: { label: '操作', action: [] }
 })
 
