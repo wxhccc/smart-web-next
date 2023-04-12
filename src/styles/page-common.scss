@@ -24,36 +24,42 @@
       padding-bottom: 12px;
     }
   }
+  // Table组件部分
+  .ue-paged-table {
+    .ant-table-wrapper,
+    .ant-table-container {
+      @include relative;
+    }
+    .ant-spin-container {
+      @include flex-block(column);
+    }
+    .ant-table {
+      flex: 1;
+      overflow: hidden;
+    }
+    .ant-table-container {
+      @include flex-block(column);
+      // justify-content: space-between;
+      .ant-table-body {
+        flex: 1;
+      }
+      .ant-pagination {
+        align-self: flex-end;
+      }
+    }
+    .ant-table-empty {
+      table {
+        height: 100%;
+      }
+    }
+  }
+  .ant-pagination {
+    margin-bottom: 0;
+  }
 }
 
 /* 列表页常用布局 */
 .sw-list-page {
-  .search-container {
-    @include search-container();
-  }
-  .operation-btns {
-    flex: 1;
-    white-space: nowrap;
-    .ant-btn {
-      margin-right: 12px;
-    }
-  }
-  .list-container {
-    flex: 1;
-  }
-  .ue-common-list-page,
-  .full-page-container {
-    height: 100%;
-    @include flex-block(column);
-    .paged-table {
-      flex: 1;
-    }
-  }
-  .full-page-container {
-    padding-bottom: 6px;
-    overflow: hidden;
-  }
-  
 }
 
 .sw-module-edit-page {

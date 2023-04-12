@@ -51,7 +51,7 @@ export function stateBtn<D extends App.AnyObject = App.AnyObject>(
   const checkIsAccess = (record: D) => isFunction(isChecked) ? isChecked(record[stateKey], record) : !!record[stateKey]
     
   const config: ActionBtnItem = tableActionBtn({
-    text: ({ text }): string => (!checkIsAccess(text) ? enable : disabled),
+    text: (record): string => (!checkIsAccess(record) ? enable : disabled),
     key: 'state',
     loadingKey: 'stateSetting',
     click: hander,
@@ -61,7 +61,6 @@ export function stateBtn<D extends App.AnyObject = App.AnyObject>(
     Object.assign(config, {
       isConfirm: true,
       confirmMsg: (record: D) => {
-        console.log(111, record)
         const isAccess = checkIsAccess(record)
         const keyWord = isAccess ? disabled : enable
           
@@ -71,7 +70,6 @@ export function stateBtn<D extends App.AnyObject = App.AnyObject>(
       }
     })
   }
-  console.log(222, confirmMessage, config)
   return config
 }
 

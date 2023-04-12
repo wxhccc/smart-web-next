@@ -17,47 +17,55 @@ export function addUser (data: User.AddPrams) {
 export function updateUser (id: App.StrOrNum, data: User.EditParams) {
   return createRequestConfig(`/access/users/${id}`, data, 'PUT')
 }
+// update user's info
+export function deleteUser (id: App.StrOrNum) {
+  return createRequestConfig(`/access/users/${id}`, undefined, 'DELETE')
+}
 // get the access roles options list of current user
 export function getAcessRoleOptions () {
   return createRequestConfig('/access/options/roles')
 }
 // get group list by cascade
-export function searchLevelGroupList (data) {
+export function getGroupOptions (data?: Group.OptionSearchParams) {
   return createRequestConfig('/access/options/groups', data)
 }
 // get groups list
-export function getGroupsList (data) {
+export function getGroupsList (data: Group.SearchParams) {
   return createRequestConfig('/access/groups', data)
 }
+// get all groups list
+export function getAllGroups () {
+  return createRequestConfig('/access/groups/all')
+}
 // add new group
-export function addUserGroup (data) {
+export function addUserGroup (data: Group.AddParams) {
   return createRequestConfig('/access/groups', data, 'POST')
 }
 // update group info
-export function updateUserGroup (gid, data) {
-  return createRequestConfig(`/access/groups/${gid}`, data, 'PUT')
+export function updateUserGroup (id: App.StrOrNum, data: Group.EditParams) {
+  return createRequestConfig(`/access/groups/${id}`, data, 'PUT')
 }
 // delete groups
-export function deleteGroups (id, data) {
-  return createRequestConfig(`/access/groups/${id}`, data, 'DELETE')
+export function deleteGroups (id: App.StrOrNum) {
+  return createRequestConfig(`/access/groups/${id}`, undefined, 'DELETE')
 }
 // get roles list
-export function getRolesList (data) {
+export function getRoleList (data: Role.SearchParams) {
   return createRequestConfig('/access/roles', data)
 }
 // add new role
-export function addRole (data) {
+export function addRole (data: Role.AddParams) {
   return createRequestConfig('/access/roles', data, 'POST')
 }
 // update role info
-export function updateRole (rid, data) {
-  return createRequestConfig(`/access/roles/${rid}`, data, 'PUT')
+export function updateRole (id: App.StrOrNum, data: Role.EditParams) {
+  return createRequestConfig(`/access/roles/${id}`, data, 'PUT')
 }
 // delete roles
-export function deleteRoles (id, data) {
-  return createRequestConfig(`/access/roles/${id}`, data, 'DELETE')
+export function deleteRole (id: App.StrOrNum) {
+  return createRequestConfig(`/access/roles/${id}`, undefined, 'DELETE')
 }
 // get access right points
-export function getAccessRights (data) {
-  return createRequestConfig('/access/rights', data)
+export function getRightsTreeOptions () {
+  return createRequestConfig('/access/options/rights')
 }

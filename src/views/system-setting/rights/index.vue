@@ -279,6 +279,7 @@ export default { name: 'SystemRights' }
       <right-edit-form
         class="right-form-pane"
         v-bind="editFormState"
+        :flat-tree-map="flatTreeMap"
         @cancel="editFormClose"
         @save="onRightItemEdit"
       >
@@ -302,9 +303,6 @@ export default { name: 'SystemRights' }
 
   .content-col {
     position: relative;
-  }
-
-  .rights-tree-pane {
   }
 
   .save-btn {

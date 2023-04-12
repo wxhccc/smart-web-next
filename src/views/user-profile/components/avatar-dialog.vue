@@ -56,7 +56,6 @@ const sendImageOss = async () => {
     for (let i in ossConfig) {
       formData.append(i, ossConfig[i])
     }
-    console.log(111, ossConfig)
     const [err, data] = await smartfetch(`https:${host}`, formData, 'POST')
     if (data) {
       emit('avatarSuccess', data.imgUrl)

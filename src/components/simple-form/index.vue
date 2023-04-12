@@ -102,7 +102,7 @@ export default defineComponent({
     /* methods */
     const submitHandler = async () => {
       const { request, paramsHandler, primaryKey } = props
-      let values = cloneDeep(formData.value)
+      let values = cloneDeep(handleValue.value)
       if (!request) {
         emit('update:modelValue', values)
         return emit('no-request-submit', values)

@@ -5,13 +5,13 @@ import { mapToObject } from '@wxhccc/es-util'
  * {array} keys 需要转化成key-value形式的对象的appConfig对象中的key数组
  ** 返回值: {object} 返回新的字典对象
  ***/
-export function configToMap(appConfig: Record<string, App.Option[]>, keys?: string[]) {
-  keys = Array.isArray(keys) ? keys : Object.keys(appConfig)
+export function configToMap(config: Record<string, App.Option[]>, keys?: string[]) {
+  keys = Array.isArray(keys) ? keys : Object.keys(config)
   const result: Record<string, Record<string, number | string>> = {}
-  appConfig &&
+  config &&
     keys.forEach((item) => {
-      if (Array.isArray(appConfig[item])) {
-        result[item] = mapToObject(appConfig[item], (item: App.Option) => `${item.value}`, 'label')
+      if (Array.isArray(config[item])) {
+        result[item] = mapToObject(config[item], (item: App.Option) => `${item.value}`, 'label')
       }
     })
   return result

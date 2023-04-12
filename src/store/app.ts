@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { Storage, configToMap } from '@/utils'
-import { getAppConfig } from '@/config'
+import { getAppDictConfigs, AppDictConfigs, AppRemoteConfigs } from '@/config'
 import { WsInstance } from '@/utils/websocket'
 
-const appConfig: ReturnType<typeof getAppConfig> = Storage.session('APPCONFIG') || getAppConfig() || {}
-export type AppConfig = typeof appConfig
+const appDictConfig: AppDictConfigs = Storage.session('APP_DICT_CONFIGS') || getAppDictConfigs() || {}
+
+export type { AppDictConfigs }
 
 export interface AppState {
   /** 左侧菜单信息 */
@@ -25,15 +26,16 @@ export interface AppState {
   /** 是否处于记录状态 */
   remember: boolean
   /** 系统字典配置对象，可以本地配置，也可以用接口获取的数据进行覆盖, 使用getters.getAppConfig(xxx)获取项 */
-  appConfig: AppConfig
+  appDictConfig: AppDictConfigs
   /** 系统字典项和其对应的value-label对象，用于value值转换（使用getters.switchFilter(xxx)） */
-  appConfigDictMap: Record<string, Record<string, string | number>>
+  appDictConfigsMap: Record<string, Record<string, string | number>>
   /** 自定义页面内标题，可用于新增页面和编辑页面的区分 */
   customPageTitle: string
   /** 全局websocket实例对象 */
   globalWs: undefined | WsInstance
   /** ali oss 临时token */
   ossAccessToken: App.AnyObject
+  appDynamicConfigs: AppRemoteConfigs
 }
 
 
@@ -58,22 +60,23 @@ export const useAppStore = defineStore('app', {
     // 当前页面是否处于表单记录状态
     remember: false,
     // 系统配置数据列表map
-    appConfig,
+    appDictConfig,
     // 系统配置数据key-value对照map
-    appConfigDictMap: configToMap(appConfig),
+    appDictConfigsMap: configToMap(appDictConfig),
     customPageTitle: '',
     globalWs: undefined,
-    ossAccessToken: Storage.get('OSSACCESSTOKEN') || {}
+    ossAccessToken: Storage.get('OSSACCESSTOKEN') || {},
+    appDynamicConfigs: {}
   }),
   getters: {
-    getAppConfig: (state) => (key: keyof AppConfig) => state.appConfig[key] || [],
-    switchFilter: (state) => (key: keyof AppConfig) => (value: App.StrOrNum) =>
-      state.appConfigDictMap[key] ? state.appConfigDictMap[key][value] : ''
+    getAppDictConfig: (state) => (key: keyof AppDictConfigs) => state.appDictConfig[key] || [],
+    switchFilter: (state) => (key: keyof AppDictConfigs) => (value: App.StrOrNum) =>
+      state.appDictConfigsMap[key] ? state.appDictConfigsMap[key][value] : ''
   },
   actions: {
-    setAppConfig (config: Partial<AppConfig> = {}) {
-      this.appConfig = { ...this.appConfig, ...config }
-      this.appConfigDictMap = configToMap(appConfig)
+    setAppDictConfig (config: Partial<AppDictConfigs> = {}) {
+      this.appDictConfig = { ...this.appDictConfig, ...config }
+      this.appDictConfigsMap = configToMap(this.appDictConfig)
     },
     toggleSidebar (payload: { value?: boolean; breakpoint?: boolean } = {}) {
       const { value, breakpoint } = payload

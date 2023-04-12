@@ -74,6 +74,6 @@ export function checkoutCommonRules(keys: (keyof typeof commonRules)[]) {
 }
 
 /* 身份证合法性验证 */
-export function idCardValidate(rule: any, value: string, callback: (e?: Error) => never) {
-  return ChinaIdCardValid(value) ? callback() : callback(new Error('身份证号码不合法'))
+export const idCardValidate: RuleObject['validator'] = (rule, value) => {
+  return ChinaIdCardValid(value) ? Promise.resolve() : Promise.reject(new Error('身份证号码不合法'))
 }

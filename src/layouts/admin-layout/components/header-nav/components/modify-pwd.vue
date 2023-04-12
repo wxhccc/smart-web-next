@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { message } from 'ant-design-vue'
-import { createInputFormItem, createFFIRulesProps, FormFieldsItem } from '@wxhccc/ue-antd-vue'
+import { createInputFormItem, createFFIRulesProps } from '@wxhccc/ue-antd-vue'
 import SimpleForm from '@/components/simple-form'
 import { regexRuleCreator } from '@/utils/validate'
-import { passwordsFormItem } from '@/common/components/form-items/confirm-pwd'
+import { passwordsFormItem } from '@/common/data/form-items'
 import { modifyPwd } from '@/api/user'
 import { useUserStore } from '@/store'
 import { encrptedPassword } from '@/utils/auth'

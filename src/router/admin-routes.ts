@@ -8,10 +8,24 @@ const rememberMeta = (listPageName: string): RouteMeta => ({
 /** 固定name（非模版）的动态权限路由列表 **/
 export const adminDynaRoutes = (): RouteRecordItem[] => [
   {
-    path: 'access/users', // 路由路径
+    path: 'access/users',
     title: '用户列表',
     name: 'UserList',
     component: () => import('@/views/users-access/users'),
+    meta: {}
+  },
+  {
+    path: 'access/groups',
+    title: '用户组',
+    name: 'GroupList',
+    component: () => import('@/views/users-access/groups'),
+    meta: {}
+  },
+  {
+    path: 'access/roles',
+    title: '角色管理',
+    name: 'RoleList',
+    component: () => import('@/views/users-access/roles'),
     meta: {}
   },
   // {

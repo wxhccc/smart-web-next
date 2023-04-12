@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { h, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { InputPassword } from 'ant-design-vue'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
-import { FormFields, FormBtns, createFFIRulesProps, createInputFormItem, vwp } from '@wxhccc/ue-antd-vue'
+import { FormFields, FormBtns, createFFIRulesProps, createInputFormItem, vwp, createFormFieldItem } from '@wxhccc/ue-antd-vue'
 import { login } from '@/api/auth'
 import { useUserStore } from '@/store'
 import { smartfetch } from '@/utils'
@@ -28,9 +29,8 @@ const fieldItems = ref([
       prefix: () => [h(UserOutlined)]
     }
   }),
-  createInputFormItem(createFFIRulesProps('', true), 'password', {
+  createFormFieldItem(InputPassword, createFFIRulesProps('', true), 'password', {
     placeholder: '密码',
-    type: 'password',
     size: "large",
     slots: {
       prefix: () => [h(LockOutlined)]

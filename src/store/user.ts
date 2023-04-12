@@ -19,6 +19,11 @@ export const useUserStore = defineStore('user', {
     userInfo: Storage.get('USERINFO') || {},
     routeActions: []
   }),
+  getters: {
+    hasPermission: (state) => {
+      return (permission: string) => state.userInfo.isSA || state.routeActions.includes(permission)
+    }
+  },
   actions: {
     setLoginIn (token: string) {
       this.isLogin = Boolean(token)

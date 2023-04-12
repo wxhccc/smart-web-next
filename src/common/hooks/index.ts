@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { FormInstance, FormProps } from 'ant-design-vue'
-import { useAppStore, AppConfig } from '@/store'
+import { useAppStore, AppDictConfigs } from '@/store'
 
 /** 提供一些表单的基础属性 */
 export const useCommonForm = <T extends App.AnyObject = App.AnyObject>(initData?: T) => {
@@ -19,7 +19,7 @@ export const useCommonForm = <T extends App.AnyObject = App.AnyObject>(initData?
  * 从store中获取指定的switchFilter
  * @param keys 
  */
-export const useStoreSwitchFilter = <K extends keyof AppConfig>(keys: K[]) => {
+export const useStoreSwitchFilter = <K extends keyof AppDictConfigs>(keys: K[]) => {
   const store = useAppStore()
 
   return keys.map((i) => store.switchFilter(i))

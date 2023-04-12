@@ -1,4 +1,4 @@
-const configs = () => ({
+const dictConfigs = () => ({
   /*** 以下部分从接口获取，可以先占位以获得TS提示 ****/
   /*** 以下部分为本地定义，也可以用字典接口内同含义数据覆盖 ****/
   enable: [
@@ -39,6 +39,6 @@ const configs = () => ({
   ]
 })
 
-export type AppConfigs = Record<keyof ReturnType<typeof configs>, App.Option[]>
+export type AppDictConfigs = Record<keyof ReturnType<typeof dictConfigs>, App.Option[]>
 
-export const getAppConfig = configs as () => AppConfigs
+export const getAppDictConfigs = dictConfigs as () => AppDictConfigs

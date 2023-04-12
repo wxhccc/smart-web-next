@@ -1,4 +1,4 @@
-import { dateFormat, PagedTbColumnProps, TableCellRow } from '@wxhccc/ue-antd-vue'
+import { dateFormat, PagedTbColumnProps, TableCellRow, vueTypeProp } from '@wxhccc/ue-antd-vue'
 import { commaNum } from '@/utils/formatter'
 
 
@@ -50,9 +50,17 @@ export function createDateTableColumn(
   format?: string,
   others?: PagedTbColumnProps
 ) {
-  const result: PagedTbColumnProps = { title, dataIndex, minWidth: 160, ...others }
+  const result: PagedTbColumnProps = { title, dataIndex, width: 160, ...others }
   if (format) {
     result.customRender = ({ text }) => text && dateFormat(text, format)
   }
   return result
+}
+
+export const editFormModalProps = <T extends App.AnyObject>() => {
+  return {
+    isEdit: vueTypeProp<boolean>(Boolean),
+    title: vueTypeProp<string>(String),
+    model: vueTypeProp<T>(Object),
+  }
 }

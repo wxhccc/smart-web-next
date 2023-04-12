@@ -20,3 +20,7 @@ export function getDemoData() {
 export const getOssAccessToken = () => {
   return smartfetch('/oss/access')
 }
+
+export const getAppBaseConfig = () => {
+  return createRequestConfig('/base/configs')
+}

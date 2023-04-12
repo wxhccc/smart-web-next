@@ -5,7 +5,7 @@ import { FormFields, SearchInput, FormBtns } from '@wxhccc/ue-antd-vue'
 import { cloneDeep, isEqual } from 'lodash-es'
 import { getSystemConfigs, updateSystemConfigs } from '@/api/system'
 import DetailPageContainer from '@/components/detail-page-container'
-import { smartfetch } from '@/utils'
+import { refToLock, smartfetch } from '@/utils'
 import { useCommonForm } from '@/common/hooks'
 import DictConfigItem from './components/dict-config-item.vue'
 import { baseModuleFieldItems, dictItemFieldItems, FormParams } from './data-and-utils'
@@ -57,12 +57,12 @@ const editDictItem = (item?: DictItem) => {
   }
   dictFormData.value = item
     ? cloneDeep(item)
-    : { key: '', value: undefined, valueType: 0, state: 1 }
+    : { key: '', value: undefined, valueType: 0, state: 1, type: 1 }
 }
 
 // 获取系统配置数据
 const fetchSystemConfigs = async () => {
-  const [err, data] = await smartfetch<OriginItem[]>(getSystemConfigs(), loading)
+  const [err, data] = await smartfetch<OriginItem[]>(getSystemConfigs(), refToLock(loading))
   if (data && Array.isArray(data)) {
     const result = data.reduce(
       (acc, cur) => {
@@ -92,7 +92,7 @@ const getModifyData = () => {
   const result: DictItem[] = []
   Object.entries(base).forEach(([key, value]) => {
     const item = originData.value[key]
-    if (base[key] !== item.value) {
+    if (!item || base[key] !== item.value) {
       result.push({ key, value })
     }
   })
@@ -108,7 +108,7 @@ const getModifyData = () => {
 
 // 更新系统配置数据
 const sendSystemConfigs = async (params: DictItem[]) => {
-  const [err] = await smartfetch(updateSystemConfigs(params), sending)
+  const [err] = await smartfetch(updateSystemConfigs(params), refToLock(sending))
   if (!err) {
     message.success('保存成功')
     fetchSystemConfigs()

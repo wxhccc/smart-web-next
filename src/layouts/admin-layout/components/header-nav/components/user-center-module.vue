@@ -1,12 +1,12 @@
 <template>
   <a-dropdown class="comp-user-center-module">
     <div class="avatar-pane">
-      <div v-if="userInfo.avatar" class="user-avatar">
-        <img v-if="userInfo.avatar" :src="userInfo.avatar" alt="" />
+      <div v-if="avatarSrc" class="user-avatar">
+        <img v-if="avatarSrc" :src="avatarSrc" alt="" />
         <user-outlined v-else />
       </div>
-      <span v-if="userInfo.name" class="user-nick">
-        {{ userInfo.name }}
+      <span v-if="username" class="user-nick">
+        {{ username }}
       </span>
       <down-outlined />
       <modify-pwd v-if="pwdModalShow" v-model:visible="pwdModalShow" title="修改密码"></modify-pwd>
@@ -30,9 +30,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, defineAsyncComponent } from 'vue'
-import { mapState } from 'pinia'
-import { useUserStore } from '@/store'
+import { defineComponent, ref, computed, defineAsyncComponent } from 'vue'
+import { useAppStore, useUserStore } from '@/store'
 
 export default defineComponent({
   name: 'UserCenterModule',
@@ -41,20 +40,24 @@ export default defineComponent({
   },
   setup() {
     const pwdModalShow = ref(false)
-    const store = useUserStore()
+    const appStore = useAppStore()
+    const userStore = useUserStore()
+
+    const userInfo = userStore.userInfo
+
+    const avatarSrc = computed(() => userInfo.avatar || appStore.appDynamicConfigs.defaultAvatar)
+
+    const username = computed(() => userInfo.nick || userInfo.account)
 
     const onChangePwd = () => {
       pwdModalShow.value = true
     }
 
     const onLogout = () => {
-      store.logout()
+      userStore.logout()
     }
 
-    return { store, pwdModalShow, onChangePwd, onLogout }
-  },
-  computed: {
-    ...mapState(useUserStore, ['userInfo'])
+    return { username, avatarSrc, pwdModalShow, onChangePwd, onLogout }
   }
 })
 </script>

@@ -25,8 +25,8 @@ declare namespace Common {
     color: string
   }
   /* 分页接口数据格式 */
-  interface PagedData<R extends Record<string, any>> {
-    records: R[]
+  interface PagedData<R extends App.AnyObject> {
+    rows: R[]
     /** 总记录条数，用于页码分页 */
     total?: number
     /** 是否有下一页，用于下拉分页 */
@@ -37,14 +37,14 @@ declare namespace Common {
   /** 基础数据对象 */
   interface RecordBase {
     id: App.StrOrNum
-    /** 创建人 */
-    createdBy?: string
+    /** 创建者信息 */
+    creatorInfo?: OperatorInfo
     /** 创建时间 */
-    createdTime?: string
+    createdAt?: string
     /** 更新人 */
-    updatedBy?: string
+    updatedInfo?: OperatorInfo
     /** 更新时间 */
-    updatedTime?: string
+    updatedAt?: string
   }
 
   interface DictItem {

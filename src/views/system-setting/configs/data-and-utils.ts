@@ -18,7 +18,7 @@ const valueLabelConfig = (isNumber: boolean): ObjectArrayColumn[] => [
 
 export function dictItemFieldItems(isEdit: boolean, isNumber: boolean) {
   const store = useAppStore()
-  const { dataType, commonState } = store.appConfig
+  const { dataType, commonState } = store.appDictConfig
   return [
     createInputFormItem(
       createFFIRulesProps('字段', true, [

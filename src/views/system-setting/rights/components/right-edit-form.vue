@@ -8,7 +8,7 @@ import {
   createRadioGroupFormItem
 } from '@wxhccc/ue-antd-vue'
 import { regexRuleCreator } from '@/utils/validate'
-import { pick, cloneDeep } from 'lodash-es'
+import { pick } from 'lodash-es'
 import { useCommonForm } from '@/common/hooks'
 import { useAppStore } from '@/store'
 
@@ -24,9 +24,6 @@ export interface CompProps {
   flatTreeMap?: Record<string, TreeItem>
 }
 
-const keyRule = regexRuleCreator('alpha', 'KEY只能是由纯字母组成')
-const arrStrRule = regexRuleCreator('alphaArrStr', 'API路由名格式有误')
-
 const props = defineProps<CompProps>()
 
 const emit = defineEmits(['save', 'cancel'])
@@ -41,7 +38,15 @@ const hasChildren = computed(() => !!props.node?.children?.length)
 
 const isChildPoint = computed(() => hasChildren.value && (props.node?.children as TreeItem[])[0].type)
 
-const parentName = computed(() => props.parent?.title || '无')
+const parentName = computed(() => {
+  const { isEdit, node, parent, flatTreeMap } = props
+  if (parent) {
+    return parent.title
+  } else if (node && flatTreeMap && flatTreeMap[node.pid]) {
+    return flatTreeMap[node.pid].title
+  }
+  return '无'
+})
 
 const lockType = computed(() => {
   const { node, parent, isEdit } = props
@@ -64,7 +69,7 @@ const fieldItems = computed(() => {
   const { editing, isEdit } = props
   const typeFieldOpts = { props: { class: 'right-type-field', disabled: !editing || lockType.value } }
   const { type } = formData.value
-  const { commonState } = store.appConfig
+  const { commonState } = store.appDictConfig
   const keyWord = type ? '关键字' : '路由Name'
   return [
     createInputFormItem('父级名称', 'parentName', '', { text: parentName.value }),
@@ -132,7 +137,7 @@ const submitHandler = () => {
 }
 const cancelHandler = () => emit('cancel')
 
-watch(() => props.node, initFormData)
+watch(() => [props.node, props.parent], initFormData)
 
 initFormData()
 </script>

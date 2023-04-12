@@ -21,6 +21,8 @@ declare namespace SystemSettings {
       isDelete?: boolean
     }
     type DictParamsItem = App.PartailExclude<EditParamsItem, 'key' | 'value' | 'valueType' | 'state'>
+
+    type PublicItem = Pick<Item, 'key' | 'value' | 'type'>
   }
   /** 权限资源 */
   declare namespace Rights {

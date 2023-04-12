@@ -1,5 +1,4 @@
-import { computed, defineComponent, h, mergeProps } from 'vue'
-import { FormFields, createInputFormItem, FormFieldItemProps, vueTypeProp } from '@wxhccc/ue-antd-vue'
+import { createInputFormItem, FormFieldItemProps } from '@wxhccc/ue-antd-vue'
 import { mergeObj } from '@/utils'
 import { RuleObject } from 'ant-design-vue/lib/form/interface'
 
@@ -64,20 +63,3 @@ export function passwordsFormItem(
   const configPwdField = mergeObj(confirmPwdField(confirmPwd, required, password, formData), customItemsProps.password)
   return [pwdField, configPwdField]
 }
-
-export default defineComponent({
-  name: 'FormItemPasswords',
-  props: {
-    required: Boolean,
-    modelValue: vueTypeProp<App.AnyObject>(Object),
-    nameKeys: vueTypeProp<NameKeys>(Object),
-    customItemsProps: vueTypeProp<CustomItemsProps>(Object)
-  },
-  setup(props, { attrs }) {
-    const items = computed(() =>
-      passwordsFormItem(props.nameKeys, props.required, props.modelValue, props.customItemsProps)
-    )
-
-    return () => h(FormFields, mergeProps(attrs, { modelValue: props.modelValue, items: items.value }))
-  }
-})

@@ -1,5 +1,5 @@
 <template>
-  <span :class="['status-dot', colorClassName]" :style="styles">
+  <span :class="['sw-status-dot', colorClassName]" :style="styles">
     <slot></slot>
   </span>
 </template>
@@ -29,7 +29,8 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
-.status-dot {
+.sw-status-dot {
+  white-space: nowrap;
   &::before {
     content: '';
     display: inline-block;

@@ -43,42 +43,12 @@
       }
     }
   }
-  // Table组件部分
-  &.sw-paged-table {
-    .ant-table-wrapper,
-    .ant-table-container {
-      @include relative;
-    }
-    .ant-spin-container {
-      @include flex-block(column);
-    }
-    .ant-table {
-      flex: 1;
-      overflow: hidden;
-    }
-    .ant-table-container {
-      @include flex-block(column);
-      // justify-content: space-between;
-      .ant-table-body {
-        flex: 1;
-      }
-      .ant-pagination {
-        align-self: flex-end;
-      }
-    }
-    .ant-table-empty {
-      table {
-        height: 100%;
-      }
-    }
-  }
 }
 .sw-text-ellipsis {
   @include text-ellipsis;
 }
 /* 内容滚动的弹框组件 */
 .sw-fixed-modal {
-  min-width: 800px;
   .ant-modal-body {
     max-height: calc(100vh - 160px);
     overflow: hidden auto;
@@ -104,18 +74,7 @@
     flex-direction: column;
     flex: 1;
     padding: 0;
-    overflow: hidden;
-  }
-  .sw-fixed-content,
-  .sw-scroll-content {
-    flex: 1;
-    padding: 20px;
-  }
-  .sw-fixed-content {
-    overflow: hidden;
-  }
-  .sw-scroll-content {
-    overflow: auto;
+    overflow: hidden auto;
   }
   .ant-drawer-footer {
     width: 100%;

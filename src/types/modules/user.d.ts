@@ -31,10 +31,8 @@ declare namespace User {
     roleIds: ('SA' | number)[]
     /** 数据权限 */
     dataStrategy: number
-    /** 所属组id */
+    /** 所属用户组id, 目前系统设计为用户只能属于一个组 */
     groupId: number
-    /** 创建者信息 */
-    creatorInfo: Common.OperatorInfo
     /** 账号状态 */
     state: number
   }
@@ -43,10 +41,10 @@ declare namespace User {
 
   type SearchParams = Search.ListParam & App.PartailPick<Base, 'account' | 'state'>
 
-  type AddPrams = App.PartailSome<
-    Pick<Base, 'account' | 'nick' | 'password' | 'dataStrategy' | 'telphone' | 'roleIds'>,
-    'nick' | 'telphone' | 'roleIds'
+  type AddParams = App.PartailSome<
+    Pick<Base, 'account' | 'nick' | 'password' | 'dataStrategy' | 'telphone' | 'roleIds' | 'state' | 'groupId'>,
+    'nick' | 'telphone' | 'roleIds' | 'groupId' | 'state'
   >
 
-  type EditParams = Partial<AddPrams>
+  type EditParams = Partial<AddParams>
 }
