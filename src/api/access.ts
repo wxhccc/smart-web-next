@@ -6,11 +6,11 @@ export function getUserList (data: User.SearchParams) {
   return createRequestConfig('/access/users', data)
 }
 // get user detail info
-export function getUserInfo (id, data) {
-  return createRequestConfig(`/access/users/${id}`, data)
+export function getUserInfo (id: App.StrOrNum) {
+  return createRequestConfig(`/access/users/${id}`)
 }
 // create new user
-export function addUser (data: User.AddPrams) {
+export function addUser (data: User.AddParams) {
   return createRequestConfig('/access/users', data, 'POST')
 }
 // update user's info

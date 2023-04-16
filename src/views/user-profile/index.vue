@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { message } from 'ant-design-vue'
+import { dateFormat } from '@wxhccc/ue-antd-vue'
 import DetailPageContainer from '@/components/detail-page-container'
-import { dateFormat, smartfetch } from '@/utils'
+import { smartfetch } from '@/utils'
 import { modifyUserProfile } from '@/api/user'
 import { useUserStore } from '@/store'
 import AvatarDialog from './components/avatar-dialog.vue'

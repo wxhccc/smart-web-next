@@ -56,7 +56,10 @@ export default defineComponent({
       <div
         :class="[
           'sw-special-radio',
-          { 'is-active': item[valueKey] === modelValue, 'sw-special-radio-disabled': disabled || item.disabled }
+          {
+            'is-active': item[valueKey] === modelValue,
+            'sw-special-radio-disabled': disabled || item.disabled
+          }
         ]"
         :style="itemStyles"
         @click="onClickHandler(item)"
@@ -67,7 +70,7 @@ export default defineComponent({
             class="radio-image"
             :preview="false"
             :src="item.imageUrl"
-            :alt="item.label"
+            :alt="`${item.label}`"
           ></sw-image>
           <a-card
             v-if="type === 'card'"
@@ -76,7 +79,7 @@ export default defineComponent({
             :class="['radio-card', { 'radio-meta-card': !!item.meta }]"
           >
             <template v-if="item.cover" #cover>
-              <sw-image :preview="false" :src="item.cover" :alt="item.label"></sw-image>
+              <sw-image :preview="false" :src="item.cover" :alt="`${item.label}`"></sw-image>
             </template>
             <slot name="cardContent" :item="item">
               <a-card-meta v-if="item.meta" v-bind="item.meta">
