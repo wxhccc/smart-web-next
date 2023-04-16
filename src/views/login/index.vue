@@ -8,6 +8,8 @@ import { login } from '@/api/auth'
 import { useUserStore } from '@/store'
 import { smartfetch } from '@/utils'
 import { encrptedPassword } from '@/utils/auth'
+import logoImage from '@/assets/smartweb-logo.png'
+import RotateCircleBg from './components/rotate-circle-bg.vue'
 
 const store = useUserStore()
 const router = useRouter()
@@ -60,10 +62,13 @@ export default { name: 'Login' }
   <div class="login-page">
     <div class="middle-pane">
       <div class="left-image-pane">
+        <rotate-circle-bg></rotate-circle-bg>
       </div>
       <div class="login-form-pane">
         <a-form ref="form" class="login-form sw-common-form" layout="vertical" :model="loginForm">
-          <div class="login-pane"></div>
+          <div class="logo-pane">
+            <img :src="logoImage" alt="" />
+          </div>
           <form-fields v-model="loginForm" :items="fieldItems" />
           <form-btns
             class="submit-btn"
@@ -135,10 +140,11 @@ export default { name: 'Login' }
     height: 360px;
   }
 
-  .login-pane {
+  .logo-pane {
     flex: 1;
-    width: 70%;
-    margin-left: 15%;
+    width: 80%;
+    margin-left: 10%;
+    padding-top: 20px;
 
     img {
       width: 100%;
@@ -171,6 +177,7 @@ export default { name: 'Login' }
 
   .submit-btn {
     width: 100%;
+    padding: 0;
     margin: 56px auto 30px;
     box-shadow: 0 12px 12px -10px var(--theme-color);
   }

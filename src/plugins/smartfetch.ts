@@ -79,11 +79,13 @@ export const errorHandler: ErrorHandler<Response> = async (
   curtomHandler ? curtomHandler(code, notifyMsg) : notifyMsg(msg as string)
 }
 
+const { VITE_APP_API_URL } = import.meta.env
+
 export const options: SmartFetchMixedRootOptions = {
   baseConfigs: [
     {
       key: 'default',
-      baseURL: 'http://localhost:8800',
+      baseURL: VITE_APP_API_URL,
       headers: () => {
         const { token } = useUserStore()
         return (token ? { Authorization: token } : {}) as any
