@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, useAttrs, watch } from 'vue'
 import { byteStringify } from '@wxhccc/es-util'
-import { message } from 'ant-design-vue'
+import { message, UploadChangeParam, UploadFile } from 'ant-design-vue'
 import { vueTypeProp } from '@wxhccc/ue-antd-vue'
 import { md5File } from '@/utils/file-parsers'
 import { getOssAccessToken } from '@/api/common'
 import { useAppStore } from '@/store'
-import { FileItem, OssUploadProps, UploadLimit } from '.'
+import { OssUploadProps, UploadLimit } from '.'
 import { createFileTypeChecker, genUid, getNewFileKey } from './utils'
 
 const typeRegMap: { [key: string]: RegExp } = {
@@ -19,11 +19,12 @@ const defaultLimit: UploadLimit = {
   size: 1024 * 1024 * 5
 }
 
-const createFileItem = (url: string): FileItem => ({ uid: genUid(), name: url.split('/').pop(), url })
+const createFileItem = (url: string): UploadFile => ({ uid: genUid(), name: url.split('/').pop() || '', url })
 
 const props = defineProps({
   modelValue: vueTypeProp<OssUploadProps['modelValue']>([String, Array]),
   manual: Boolean,
+  dir: vueTypeProp<string>(String),
   limit: vueTypeProp<UploadLimit>(Object),
   showProgress: Boolean,
   keepOriginName: vueTypeProp<boolean>(Boolean, true),
@@ -38,7 +39,7 @@ const attrs = useAttrs()
 
 const store = useAppStore()
 
-const getInitFileList = (): FileItem[] => {
+const getInitFileList = (): UploadFile[] => {
   const { fileList } = attrs
   // 优先使用传入的fileList属性
   if (Array.isArray(fileList)) {
@@ -61,10 +62,10 @@ const OST = computed(() => store.ossAccessToken)
 const isValueArr = computed(() => Array.isArray(props.modelValue))
 
 const fileList = computed({
-  get(): FileItem[] {
+  get(): UploadFile[] {
     return Array.isArray(attrs.fileList) ? attrs.fileList : selfList.value
   },
-  set(val: FileItem[]) {
+  set(val: UploadFile[]) {
     selfTrigger.value = true
     selfList.value = val
     emit('update:fileList', val)
@@ -108,12 +109,12 @@ const errorTip = (msg: string) => message.error(msg)
 const uploadError = () => {
   errorTip('文件上传失败，请稍后重试')
 }
-const removeFile = (file: FileItem) => {
+const removeFile = (file: UploadFile) => {
   fileList.value = fileList.value.filter((item) => item.uid !== file.uid)
 }
 
 const handleImgData = (file: File) => {
-  const key = getNewFileKey(file.name)
+  const key = `adm/${props.dir || ''}${getNewFileKey(file.name)}`
   imageData.value = { ...OST.value, key }
 }
 
@@ -196,6 +197,20 @@ const checkObsExpired = () => {
 //   const fileItem = { uid: baseName, ...res }
 //   fileList.value = [...fileList.value, fileItem]
 // }
+const onFileListChange = ({ file, fileList: list, event }: UploadChangeParam) => {
+  let hasNewItem = false
+  list.forEach(item => {
+    const { url, status, response } = item
+    if (!url && status === 'done' && response?.data?.url) {
+      item.url = response?.data?.url
+      hasNewItem = true
+    }
+  })
+  console.log(1111, list, fileList.value)
+  if(hasNewItem) {
+    fileList.value = list
+  }
+}
 const getAccessToken = async (needReject?: boolean) => {
   const [err, data] = await getOssAccessToken()
   if (err || !data) {
@@ -218,13 +233,13 @@ export default { name: 'OssUpload' }
     v-if="OST.host || $attrs.httpRequest"
     ref="upload"
     :class="['abs-files-upload', { 'single-file': !isValueArr }]"
-    :file-list="fileList"
+    v-model:file-list="fileList"
     :disabled="upLoading"
     :on-error="uploadError"
-    v-bind="$attrs"
     :action="OST.host"
     :data="imageData"
     :before-upload="beforeUpload"
+    @change="onFileListChange"
     @remove="removeFile"
   >
     <slot v-if="showTriggerBtn" :loading="upLoading">

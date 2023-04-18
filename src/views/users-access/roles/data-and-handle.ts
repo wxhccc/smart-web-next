@@ -35,7 +35,7 @@ export const useListPageData = (actions: ComputedRef<ActionBtnItem[]>) => {
     return [
       nameFormItem(),
       descriptionFormItem(),
-      createFormFieldItem(TreeField, '权限', 'rightIds', { props: { data: rightsOptions.value, fieldNames: { key: 'id', title: 'name' } } })
+      createFormFieldItem(TreeField, '权限', 'rightIds', { props: { data: rightsOptions.value, checkMode: 'one-way', fieldNames: { title: 'name' } } })
     ]
   })
 

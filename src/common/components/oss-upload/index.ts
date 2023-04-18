@@ -1,17 +1,6 @@
 import { UploadProps } from 'ant-design-vue'
 import { UploadLimit } from './utils'
 
-export interface FileItem {
-  lastModified?: number
-  name?: string
-  size?: number
-  type?: string
-  url?: string
-  uid?: App.StrOrNum
-  status?: 'uploading' | 'done' | 'error' | 'removed'
-  percent?: number
-}
-
 export interface OssUploadProps extends UploadProps {
   modelValue?: string | string[]
   limit?: UploadLimit

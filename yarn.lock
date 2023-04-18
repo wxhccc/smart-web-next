@@ -540,10 +540,10 @@
   resolved "https://registry.npmjs.org/@wxhccc/smartfetch/-/smartfetch-4.1.2.tgz#f5bf3feb76c1d7560149431d10c37bc3e769cea2"
   integrity sha512-GMR+HSTELi5fkINxVO14KYzvMambsC/ETmG0ddsZPUiYnXbuveN88F0jTNZ2l4tIPMIRuVPEflKo4n6cnXophQ==
 
-"@wxhccc/ue-antd-vue@^1.1.0-beta.0":
-  version "1.1.0-beta.0"
-  resolved "https://registry.npmjs.org/@wxhccc/ue-antd-vue/-/ue-antd-vue-1.1.0-beta.0.tgz#eec9b6fcff84651e57e31cd8b0fe958397a21384"
-  integrity sha512-JYhNoZekqL8id9DVoy2w15xLk5vQ1z320IOnvIa3Ot1fGWs/oWlLUoIbP2L3X0r4kU/EELzbIq4VQybnoisP1g==
+"@wxhccc/ue-antd-vue@^1.1.0-beta.1":
+  version "1.1.0-beta.1"
+  resolved "https://registry.npmjs.org/@wxhccc/ue-antd-vue/-/ue-antd-vue-1.1.0-beta.1.tgz#50b933af54820c57a0c8bf21a85e8730ce18ecf9"
+  integrity sha512-ejHlBm2tYhVILI5NXoEyMckEF/AuDABvybyR1SZ5OtT65MTDnnhL4LA1YXe4HCVZUwyIofuApnNTaZJ4Uw6vOQ==
   dependencies:
     "@wxhccc/ue-shared" "^1.0.0-beta.5"
     copy-to-clipboard "^3.3.2"

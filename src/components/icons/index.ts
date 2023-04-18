@@ -1,5 +1,5 @@
 import { defineComponent, h, Component, markRaw } from 'vue'
-import Icon from '@ant-design/icons-vue'
+import Icon, { AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue'
 /** 菜单部分 */
 import IconMonitor from './svg/menu/icon-monitor.svg?component'
 /** 其他图标 */
@@ -13,6 +13,9 @@ const wrapWithIcon = (Comp: Component) =>
       }
     })
   )
-export const menuIcons: Record<string, ReturnType<typeof wrapWithIcon>> = {
-  Optinization: wrapWithIcon(IconMonitor)
+
+export const menuIcons: Record<string, any> = {
+  'optinization': wrapWithIcon(IconMonitor),
+  'SystemSetting': SettingOutlined,
+  'default': AppstoreOutlined
 }

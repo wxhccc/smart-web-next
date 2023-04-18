@@ -247,8 +247,9 @@ export default { name: 'SystemRights' }
               >
                 <stop-outlined />
                 {{ title }}
+                <a-tag v-if="data.static" class="static-tags">system</a-tag>
               </span>
-              <div class="operation-btns">
+              <div v-if="!data.static || data.children.length" class="operation-btns">
                 <a-button
                   v-if="data.type === 0"
                   type="link"
@@ -259,16 +260,18 @@ export default { name: 'SystemRights' }
                     <plus-outlined />
                   </template>
                 </a-button>
-                <a-button type="link" size="small" @click="() => editNode(data)">
-                  <template #icon>
-                    <edit-outlined />
-                  </template>
-                </a-button>
-                <a-button type="link" size="small" danger @click="() => deleteNode(data)">
-                  <template #icon>
-                    <delete-outlined />
-                  </template>
-                </a-button>
+                <template v-if="!data.static">
+                  <a-button type="link" size="small" @click="() => editNode(data)">
+                    <template #icon>
+                      <edit-outlined />
+                    </template>
+                  </a-button>
+                  <a-button type="link" size="small" danger @click="() => deleteNode(data)">
+                    <template #icon>
+                      <delete-outlined />
+                    </template>
+                  </a-button>
+                </template>
               </div>
             </div>
           </template>
@@ -340,10 +343,10 @@ export default { name: 'SystemRights' }
       }
     }
 
-    .menu-node {
-    }
-
-    .point-node {
+    .static-tags {
+      margin-left: 12px;
+      font-size: 12px;
+      line-height: 18px;
     }
   }
 }

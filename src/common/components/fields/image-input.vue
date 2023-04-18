@@ -4,6 +4,7 @@ import { useVModel, useIgnoreWatch } from '@wxhccc/ue-antd-vue'
 import OssUpload from '../oss-upload'
 
 const props = defineProps<{
+  dir?: string
   modelValue?: string
 }>()
 const emit = defineEmits<{
@@ -31,7 +32,7 @@ useIgnoreWatch(() => props.modelValue, () => {
     <a-input class="image-url-input" v-model:value="selfValue" @blur="updateInput"></a-input>
     <div class="image-upload-pane">
       <img v-if="modelValue" :src="modelValue" alt="" />
-      <oss-upload class="upload-hanlder" model-value="" @update:model-value="uploadUpdate" :show-upload-list="false">
+      <oss-upload class="upload-hanlder" model-value="" :dir="dir" @update:model-value="uploadUpdate" :show-upload-list="false">
         <a-button>
           <template #icon>
             <edit-outlined v-if="!!modelValue" />

@@ -9,7 +9,7 @@ import ObjectArrayField, { ObjectArrayColumn } from '@/components/object-array-f
 import { useAppStore } from '@/store'
 
 export function baseModuleFieldItems() {
-  return [createFormFieldItem(ImageInput, { label: '默认用户头像' }, 'defaultAvatar')]
+  return [createFormFieldItem(ImageInput, { label: '默认用户头像' }, 'defaultAvatar', { props: { dir: 'avatar/' } })]
 }
 const valueLabelConfig = (isNumber: boolean): ObjectArrayColumn[] => [
   { name: 'value', label: 'Value', isNumber, colProps: { span: 10 } },

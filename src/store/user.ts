@@ -21,7 +21,7 @@ export const useUserStore = defineStore('user', {
   }),
   getters: {
     hasPermission: (state) => {
-      return (permission: string) => state.userInfo.isSA || state.routeActions.includes(permission)
+      return (permission: string) => state.userInfo.isSA || state.routeActions.some(action => action.includes(permission))
     }
   },
   actions: {

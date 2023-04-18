@@ -93,7 +93,7 @@ const getModifyData = () => {
   Object.entries(base).forEach(([key, value]) => {
     const item = originData.value[key]
     if (!item || base[key] !== item.value) {
-      result.push({ key, value })
+      result.push({ ...(item ? { id: item.id } : {}), key, value })
     }
   })
   dict.forEach((item) => {

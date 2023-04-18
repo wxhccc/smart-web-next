@@ -65,21 +65,12 @@ export default { name: 'Login' }
         <rotate-circle-bg></rotate-circle-bg>
       </div>
       <div class="login-form-pane">
-        <a-form ref="form" class="login-form sw-common-form" layout="vertical" :model="loginForm">
+        <a-form ref="form" class="login-form sw-common-form" layout="vertical" :model="loginForm" @finish="loginSend">
           <div class="logo-pane">
             <img :src="logoImage" alt="" />
           </div>
           <form-fields v-model="loginForm" :items="fieldItems" />
-          <form-btns
-            class="submit-btn"
-            size="large"
-            submit-only
-            is-validate
-            :form="form"
-            :btn-props="{ block: true }"
-            :sending="sending"
-            :submit="loginSend"
-          ></form-btns>
+          <a-button type="primary" html-type="submit" class="submit-btn" size="large">登录</a-button>
         </a-form>
       </div>
     </div>
