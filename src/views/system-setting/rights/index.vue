@@ -35,6 +35,8 @@ const flatTreeMap = computed(
   () => tree2array(rightsTree.value, { returnObject: true }) as Record<string, TreeItem>
 )
 
+console.log
+
 /** utils **/
 const checkParentPropFalsy = (node: TreeItem, prop: keyof TreeItem = 'state') => {
   let curNode = node
@@ -247,7 +249,12 @@ export default { name: 'SystemRights' }
               >
                 <stop-outlined />
                 {{ title }}
-                <a-tag v-if="data.static" class="static-tags">system</a-tag>
+                <a-tooltip v-if="data.static" title="System Static">
+                  <a-tag class="static-tags">S</a-tag>
+                </a-tooltip>
+                <a-tooltip v-if="data.vrid" title="Virtual Route">
+                  <a-tag class="static-tags">V</a-tag>
+                </a-tooltip>
               </span>
               <div v-if="!data.static || data.children.length" class="operation-btns">
                 <a-button

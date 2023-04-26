@@ -1,10 +1,6 @@
 declare namespace App {
   /** 处理之后的左侧菜单权限数据 */
-  interface RightItem {
-    id: number
-    parentId: number
-    /** 菜单项标题 */
-    title: string
+  interface RightItem extends Omit<Auth.RightItem, 'key' | 'icon'> {
     /** 页面的路由name，全局唯一 */
     name: string
     /** 页面地址路径，仅对虚拟路由页面有效 */
@@ -12,7 +8,7 @@ declare namespace App {
     /** 权限点标识 */
     permission?: string
     /** 子菜单项 */
-    children: Item[]
+    children: RightItem[]
     /** 权限点类型，0=菜单，1=功能点 */
     type: number
     /** 关联到子级菜单的name */

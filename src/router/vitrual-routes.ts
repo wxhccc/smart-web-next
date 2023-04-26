@@ -4,7 +4,7 @@ import { TplRouteRecord } from './types'
 
 /** 虚拟页map */
 const vitrualRoutesMap: Record<string, AsyncComponentLoader<Component>> = {
-  // PagedTablePage: () => import('@/views/template/PagedTablePage')
+  PagedTablePage: () => import('@/common/template/paged-list-page')
 }
 
 /** 模版页的配置信息对象 **/

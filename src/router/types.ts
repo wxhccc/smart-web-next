@@ -15,6 +15,8 @@ export interface RouteMeta extends OrgRouteMeta {
   breadcrumb?: RouteBreadcrumbItem[]
   /** 当前路由所在的一级菜单的名称，用于在跳转后正确展开菜单 */
   rootMenuName?: string
+  /** 虚拟页面的配置id，虚拟路由页面才有 */
+  virtualPageId?: App.StrOrNum
   [k: string]: any
 }
 

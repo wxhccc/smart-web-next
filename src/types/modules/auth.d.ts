@@ -23,6 +23,10 @@ declare namespace Auth {
     type: number
     /** 菜单页面的路由name或页面权限点的key, 为name时需要全局唯一 */
     key: string
+    /** 虚拟页面项配置id */
+    vrid: number
+    /** 虚拟页面使用的模板组件名称 */
+    template: string
     children?: RightItem[]
   }
 }

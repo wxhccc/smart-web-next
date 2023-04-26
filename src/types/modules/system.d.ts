@@ -41,8 +41,10 @@ declare namespace SystemSettings {
       routes: string
       /** 资源类型，0=菜单，1=功能点 */
       type: number
-      /** 模版页名称 */
-      template: string
+      /** 虚拟页面配置项id */
+      vrid: number
+      /** 路由页面地址路径，虚拟页面使用 */
+      path: string
       /** 排序值 */
       orderValue: number
       /** 状态，0=禁用，1=正常 */

@@ -5,16 +5,20 @@ import {
   FormBtns,
   createFFIRulesProps,
   createInputFormItem,
-  createRadioGroupFormItem
+  createRadioGroupFormItem,
+  createSelectFormItem
 } from '@wxhccc/ue-antd-vue'
 import { regexRuleCreator } from '@/utils/validate'
 import { pick } from 'lodash-es'
 import { useCommonForm } from '@/common/hooks'
 import { useAppStore } from '@/store'
+import { useVirtualPagesOptions } from '@/common/hooks/get-options'
 
 export type TreeItem = SystemSettings.Rights.TreeItem
 
-export type FormParams = SystemSettings.Rights.AddParams | SystemSettings.Rights.EditParams
+export interface FormParams extends SystemSettings.Rights.EditParams {
+  virtual?: number
+}
 
 export interface CompProps {
   isEdit?: boolean
@@ -30,13 +34,17 @@ const emit = defineEmits(['save', 'cancel'])
 
 const { form, formData, formProps } = useCommonForm<FormParams>()
 
+const { options: virtualPagesOptions } = useVirtualPagesOptions()
+
 const store = useAppStore()
 
 const showForm = computed(() => props.node || (props.editing && !props.isEdit))
 
 const hasChildren = computed(() => !!props.node?.children?.length)
 
-const isChildPoint = computed(() => hasChildren.value && (props.node?.children as TreeItem[])[0].type)
+const isChildPoint = computed(
+  () => hasChildren.value && (props.node?.children as TreeItem[])[0].type
+)
 
 const parentName = computed(() => {
   const { isEdit, node, parent, flatTreeMap } = props
@@ -67,9 +75,11 @@ const lockState = computed(() => !!formData.value.type)
 
 const fieldItems = computed(() => {
   const { editing, isEdit } = props
-  const typeFieldOpts = { props: { class: 'right-type-field', disabled: !editing || lockType.value } }
-  const { type } = formData.value
-  const { commonState } = store.appDictConfig
+  const typeFieldOpts = {
+    props: { class: 'right-type-field', disabled: !editing || lockType.value }
+  }
+  const { type, virtual, vrid } = formData.value
+  const { commonState, numBoolean } = store.appDictConfig
   const keyWord = type ? '关键字' : '路由Name'
   return [
     createInputFormItem('父级名称', 'parentName', '', { text: parentName.value }),
@@ -82,12 +92,25 @@ const fieldItems = computed(() => {
       ],
       typeFieldOpts
     ),
-    createInputFormItem(createFFIRulesProps('名称', true), 'title', { placeholder: '用于展示菜单/权限点名称的文字', disabled: !editing }),
-    createInputFormItem(
-      createFFIRulesProps(keyWord, true),
-      'key',
-      { placeholder: `请输入${keyWord}`, disabled: !editing }
-    ),
+    ...(type === 0
+      ? [createRadioGroupFormItem('是否虚拟', 'virtual', numBoolean, typeFieldOpts)]
+      : []),
+    ...(virtual === 1
+      ? [createSelectFormItem(createFFIRulesProps('页面配置'), 'vrid', virtualPagesOptions.value, { onChange: onVirtualRouteChange })]
+      : []),
+    createInputFormItem(createFFIRulesProps('名称', true), 'title', {
+      placeholder: '用于展示菜单/权限点名称的文字',
+      disabled: !editing
+    }),
+    createInputFormItem(createFFIRulesProps(keyWord, true), 'key', {
+      placeholder: `请输入${keyWord}`,
+      disabled: !editing || virtual
+    }),
+    ...(virtual === 1
+      ? [
+          createInputFormItem(createFFIRulesProps('地址路径', true), 'path', '请输入地址路径')
+        ]
+      : []),
     // ...(indexField.value ? [indexField.value] : []),
     ...(type === 0
       ? [
@@ -103,18 +126,17 @@ const fieldItems = computed(() => {
     //   'routes',
     //   'API路由名, 多个用英文逗号(,)分隔'
     // ),
-    createRadioGroupFormItem(
-      '状态',
-      'state',
-      commonState as Common.SelectOption[],
-      { disabled: !editing }
-    )
+    createRadioGroupFormItem('状态', 'state', commonState as Common.SelectOption[], {
+      disabled: !editing
+    })
   ]
 })
 
 const initFormData = () => {
-  if (props.node) {
-    formData.value = pick(props.node, ['id', 'icon', 'index', 'key', 'type', 'title', 'state'])
+  const { node } = props
+  if (node) {
+    const nodeData = pick(node, ['id', 'icon', 'index', 'key', 'type', 'title', 'vrid', 'state', 'path'])
+    formData.value = { ...nodeData, virtual: node.vrid ? 1 : 0 }
   } else {
     const curTime = Math.floor(+new Date() / 1000)
     const { parent } = props
@@ -125,10 +147,20 @@ const initFormData = () => {
       title: '',
       type,
       state: 1,
+      virtual: 0,
       icon: '',
       index: '',
       orderValue: curTime
     }
+  }
+}
+
+const onVirtualRouteChange = (val: App.StrOrNum) => {
+  const item = virtualPagesOptions.value.find(i => i.value === val)
+  console.log(1111, item)
+  if (item) {
+    const { routeName, name } = item.origin as VirtualRoutes.Item
+    Object.assign(formData.value, { title: name, key: routeName } as FormParams)
   }
 }
 /** events **/
@@ -143,12 +175,7 @@ initFormData()
 </script>
 <template>
   <div class="swcomp-right-form-card">
-    <a-form
-      v-show="showForm"
-      ref="form"
-      :model="formData"
-      v-bind="formProps"
-    >
+    <a-form v-show="showForm" ref="form" :model="formData" v-bind="formProps">
       <form-fields :items="fieldItems" v-model="formData"></form-fields>
       <a-form-item class="form-btns-pane line-form-item" label=" " :colon="false">
         <form-btns

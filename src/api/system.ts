@@ -25,3 +25,23 @@ export const getSystemConfigs = () => {
 export const updateSystemConfigs = (data: SystemSettings.Configs.EditParamsItem[]) => {
   return createRequestConfig('/system/configs', data, 'PUT')
 }
+
+// 获取所有虚拟路由页面
+export const getVirtualPages = () => {
+  return createRequestConfig('/system/virtual-pages')
+}
+// 新增虚拟路由页面
+export const getVirtualPageDetail = (id: App.StrOrNum) => {
+  return createRequestConfig(`/system/virtual-pages/${id}`)
+}
+// 新增虚拟路由页面
+export const createVirtualPage = (data: VirtualRoutes.AddParams) => {
+  return createRequestConfig('/system/virtual-pages', data, 'POST')
+}
+// 更新虚拟路由页面
+export const updateVirtualPage = (id: number, data: VirtualRoutes.EditParams) => {
+  return createRequestConfig(`/system/virtual-pages/${id}`, data, 'PUT')
+}
+export const deleteVirtualPage = (id: App.StrOrNum) => {
+  return createRequestConfig(`/system/virtual-pages/${id}`, undefined, 'DELETE')
+}

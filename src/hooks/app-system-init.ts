@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMenuRightsTree } from '@/api/auth'
-import { getAppBaseConfig, getVirtualTplMap } from '@/api/common'
+import { getAppBaseConfig } from '@/api/common'
 import { MenuRoutesInfo, addDynamicRouters, handleMenuInfo, resoucesToRights } from '@/router/router-handler'
 import { useAppStore, useUserStore } from '@/store'
 import { Storage, smartfetch } from '@/utils'
@@ -20,11 +20,10 @@ export const useInitSidebarInfo = () => {
   const getSidebarInfo = async () => {
     const sidebarInfo: {
       sidebarJson: string
-      virtualRoutes: string
       handledData: MenuRoutesInfo
     } = Storage.session('SIDEBARINFO') || {}
     let firstRoute = ''
-    const { handledData, sidebarJson, virtualRoutes } = sidebarInfo
+    const { handledData, sidebarJson } = sidebarInfo
     // 先使用本地缓存的数据生成路由
     if (handledData) {
       firstRoute = handleSidebarData(handledData)
@@ -33,20 +32,17 @@ export const useInitSidebarInfo = () => {
       appStore.sidebar.firstRoute = firstRoute
     }
     // 异步请求数据，然后根据是否变化决定是否需要更新缓存和视图
-    const result = await Promise.all([getMenuRightsTree(), getVirtualTplMap()])
-    const [[err, resource], [, virtualTplMap]] = result
+    const [err, resource] = await getMenuRightsTree()
     // 获取资源失败需要退出登录，获取虚拟路由关系图失败则不生成虚拟路由
     if (err) {
       userStore.logout()
     }
     const newSidebarJson = JSON.stringify(resource)
-    const vtmJson = JSON.stringify(virtualTplMap)
-    if (newSidebarJson === sidebarJson && vtmJson === virtualRoutes) {
+    if (newSidebarJson === sidebarJson) {
       return
     }
     sidebarInfo.sidebarJson = newSidebarJson
-    sidebarInfo.virtualRoutes = vtmJson
-    const rights = resoucesToRights(resource || [], virtualTplMap)
+    const rights = resoucesToRights(resource || [])
     sidebarInfo.handledData = handleMenuInfo(rights)
     const newFirstRoute = handleSidebarData(sidebarInfo.handledData)
     Storage.session('SIDEBARINFO', sidebarInfo)

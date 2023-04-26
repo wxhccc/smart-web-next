@@ -36,6 +36,13 @@ const dictConfigs = () => ({
     { value: 0, label: '个人数据策略' },
     { value: 1, label: '组内数据策略' },
     { value: 2, label: '管理员数据策略' }
+  ],
+  /** 接口请求方式 */
+  requestMethods: [
+    { label: 'GET', value: 'GET' },
+    { label: 'POST', value: 'POST' },
+    { label: 'PUT', value: 'PUT' },
+    { label: 'DELETE', value: 'DELETE' }
   ]
 })
 

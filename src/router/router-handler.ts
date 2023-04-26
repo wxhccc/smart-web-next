@@ -27,9 +27,15 @@ export function handleMenuInfo(rightsInfo: App.RightItem[]) {
     const dynaRoutes = adminDynaRoutes()
     try {
       // 生成菜单数据和路由权限
-      const { menu, routeActions, routeParentNames, rightsMap, virtualRoutes } = handleMenusInfo(rightsInfo)
+      const { menu, routeActions, routeParentNames, rightsMap, virtualRoutes } =
+        handleMenusInfo(rightsInfo)
       // 生成动态路由数据
-      result.dynaRoutes = handleRoutes(routeActions, dynaRoutes.concat(virtualRoutes), rightsMap, routeParentNames)
+      result.dynaRoutes = handleRoutes(
+        routeActions,
+        dynaRoutes.concat(virtualRoutes),
+        rightsMap,
+        routeParentNames
+      )
       result.menu = menu
       result.actions = routeActions
     } catch (e) {
@@ -71,17 +77,18 @@ function checkoutIndexItem(item: App.RightItem) {
 }
 
 /* 处理使用模版页的虚拟菜单路由，转换为有效路由对象  */
-function transformTplToRoute(tplName: string, routeName: string, path?: string) {
-  const { path: pathCreator, meta } = tplSwitchMap[tplName]
+function transformTplToRoute(item: App.RightItem) {
+  const { vrid, template, name: routeName, path } = item as Required<App.RightItem>
+  const { path: pathCreator, meta } = tplSwitchMap[template]
   if (!path) {
     return null
   }
   const route: RouteRecordItem = {
     path: path || pathCreator(routeName) || '',
     name: routeName,
-    component: tplName
+    component: template
   }
-  meta && (route.meta = getFnValue(meta, routeName, tplName))
+  route.meta = { virtualPageId: vrid, ...getFnValue(meta, routeName, template) }
   return route
 }
 
@@ -95,7 +102,8 @@ function handleMenusInfo(rightsInfo: App.RightItem[]) {
     virtualRoutes: RouteRecordItem[]
   } = { menu: [], routeParentNames: {}, rightsMap: {}, routeActions: [], virtualRoutes: [] }
   // 检查菜单项是否是最后一层
-  const checkItemLastLvl = (item: App.RightItem) => !item.children || !item.children.length || !!item.children[0].type
+  const checkItemLastLvl = (item: App.RightItem) =>
+    !item.children || !item.children.length || !!item.children[0].type
 
   // 用接口权限数据递归生成满足条件的菜单数据
   const getMenuItem = (
@@ -103,7 +111,7 @@ function handleMenusInfo(rightsInfo: App.RightItem[]) {
     item: App.RightItem,
     parentItem?: App.RightItem & { prevNames?: string[] }
   ) => {
-    const { type, title, icon, permission, template, path = '' } = item
+    const { type, title, icon, permission, vrid, template, path = '' } = item
     let { name, children } = item
     const { prevNames = [] } = parentItem || {}
     const curPrevNames = prevNames.concat(name)
@@ -137,11 +145,13 @@ function handleMenusInfo(rightsInfo: App.RightItem[]) {
       if (!isLastLvl) {
         menuItem.children = []
       }
-      children.forEach((ci) => getMenuItem(menuItem.children || [], ci, { ...item, prevNames: curPrevNames }))
+      children.forEach((ci) =>
+        getMenuItem(menuItem.children || [], ci, { ...item, prevNames: curPrevNames })
+      )
     }
     // 将虚拟路由添加到virtualRoutes中
     if (isTemplate) {
-      const vroute = transformTplToRoute(template as string, name, path)
+      const vroute = transformTplToRoute(item)
       vroute && result.virtualRoutes.push(vroute)
     }
     menuArr.push(menuItem)
@@ -184,7 +194,9 @@ function handleRoutes(
   const getRouteBreadcrumb = (routeItem: RouteRecordItem) => {
     const { name, title } = routeItem
     const { title: rightLable } = rightsMap[name as string] || {}
-    const breadcrumb: RouteMeta['breadcrumb'] = [{ name: name as string, label: rightLable || title || '' }]
+    const breadcrumb: RouteMeta['breadcrumb'] = [
+      { name: name as string, label: rightLable || title || '' }
+    ]
     let parentName = routeParentNames[name as string]
     let parentRoute: App.RightItem | undefined = parentName ? rightsMap[parentName] : undefined
     while (parentRoute) {
@@ -274,7 +286,11 @@ export function routesAddComponents(routes: RouteRecordItem[]) {
 }
 
 /** 整合路由数据并添加到router **/
-export function addDynamicRouters(router: Router, routes: RouteRecordItem[] = [], oldRouteNames?: string[]) {
+export function addDynamicRouters(
+  router: Router,
+  routes: RouteRecordItem[] = [],
+  oldRouteNames?: string[]
+) {
   const adminRoutes = cloneDeep(routes) as RouteRecordRaw[]
   const newRouteNames = routesAddComponents(adminRoutes)
   // 删除旧的不存在的路由
@@ -294,27 +310,19 @@ export function addDynamicRouters(router: Router, routes: RouteRecordItem[] = []
 }
 
 /** 将接口的菜单资源数据和虚拟菜单关系图转换成权限数据 */
-export const resoucesToRights = (
-  resources: Auth.RightItem[],
-  vitrualRoutesMap: VirtualRoutes.RouteTplMap = {}
-): App.RightItem[] => {
+export const resoucesToRights = (resources: Auth.RightItem[]): App.RightItem[] => {
   if (!Array.isArray(resources) || !resources.length) {
     return []
   }
   return resources.map((item) => {
     const { type, key, children, ...reset } = item
     const [name, permission] = type === 0 ? [key, undefined] : [undefined, key]
-    const vRoute = name ? vitrualRoutesMap[name] : null
-    const { component: template, path } = (
-      vRoute ? (typeof vRoute === 'string' ? { component: vRoute } : vRoute) : {}
-    ) as VirtualRoutes.RouteTplInfo
     return {
       ...reset,
       type,
       name,
       permission,
-      ...(template ? { template, path } : {}),
-      children: resoucesToRights(children || [], vitrualRoutesMap)
+      children: resoucesToRights(children || [])
     } as App.RightItem
   })
 }

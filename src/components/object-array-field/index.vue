@@ -147,7 +147,7 @@ export default { name: 'ObjectArrayField' }
         <template v-if="!object.static">
           <slot name="actionBtns" :item="object" :index="trueIndex(oindex)" :value="modelValue">
             <a-button
-              class="jw-link-icon"
+              class="sw-link-icon"
               :disabled="trueIndex(oindex) === modelValue.length - 1"
               type="link"
               size="small"

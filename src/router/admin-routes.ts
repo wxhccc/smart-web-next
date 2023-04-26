@@ -81,8 +81,8 @@ export const adminDynaRoutes = (): RouteRecordItem[] => [
   },
   {
     path: 'system/virtual-pages',
-    name: 'SystemVirtualPages',
-    component: () => import('@/views/system-setting/configs'),
+    name: 'VirtualRoutePages',
+    component: () => import('@/views/system-setting/virtual-route-pages'),
     meta: {}
   }
 ]

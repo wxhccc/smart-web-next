@@ -530,10 +530,10 @@
   resolved "https://registry.npmjs.org/@vue/shared/-/shared-3.2.45.tgz#a3fffa7489eafff38d984e23d0236e230c818bc2"
   integrity sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==
 
-"@wxhccc/es-util@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/@wxhccc/es-util/-/es-util-2.1.0.tgz#c9b964759fee64161e15957a4f9581f2245e698d"
-  integrity sha512-v0qR4ARAURJGCQCrPi8ffsYhHv/1gwXstp3rFCkOWra2dEnisbg4x0SBtZ3bnsXgAlnPHoTS1ZkvBUEu2mP5Gg==
+"@wxhccc/es-util@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.npmjs.org/@wxhccc/es-util/-/es-util-2.1.2.tgz#a9b618cc7cbc526bd9819625274afbce55e6378b"
+  integrity sha512-mgenMIZIqeSX6zwUaWXZZHtKjk3wyIiWuNJ0PfEAvK2wv59xF64i9IMkq+yatWYQLgQonYl5evFL21eo8VS/NA==
 
 "@wxhccc/smartfetch@^4.1.2":
   version "4.1.2"
@@ -1799,6 +1799,11 @@ slash@^3.0.0:
   resolved "https://registry.npmjs.org/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
+sortablejs@1.14.0:
+  version "1.14.0"
+  resolved "https://registry.npmjs.org/sortablejs/-/sortablejs-1.14.0.tgz#6d2e17ccbdb25f464734df621d4f35d4ab35b3d8"
+  integrity sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w==
+
 "source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
@@ -2038,6 +2043,13 @@ vue@^3.2.41:
     "@vue/runtime-dom" "3.2.45"
     "@vue/server-renderer" "3.2.45"
     "@vue/shared" "3.2.45"
+
+vuedraggable@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/vuedraggable/-/vuedraggable-4.1.0.tgz#edece68adb8a4d9e06accff9dfc9040e66852270"
+  integrity sha512-FU5HCWBmsf20GpP3eudURW3WdWTKIbEIQxh9/8GE806hydR9qZqRRxRE3RjqX7PkuLuMQG/A7n3cfj9rCEchww==
+  dependencies:
+    sortablejs "1.14.0"
 
 warning@^4.0.0:
   version "4.0.3"
